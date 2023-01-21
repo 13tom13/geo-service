@@ -1,9 +1,6 @@
-
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import ru.netology.entity.Country;
 import ru.netology.entity.Location;
@@ -39,19 +36,23 @@ public class GeoServiceTest {
 
         //arrange:
         GeoService geoServiceImpl = new GeoServiceImpl();
-        Country testCountry = null;
         GeoService geoServiceTest = Mockito.mock(GeoService.class);
+        Location testLocation = Mockito.mock(Location.class);
+
         if (testIp.startsWith("172.")) {
-            testCountry = Country.RUSSIA;
+            Mockito.when(testLocation.getCountry())
+                    .thenReturn(Country.RUSSIA);
         } else if (testIp.startsWith("96.")) {
-            testCountry = Country.USA;
+            Mockito.when(testLocation.getCountry())
+                    .thenReturn(Country.USA);
         }
+
         Mockito.when(geoServiceTest.byIp(testIp))
-                .thenReturn(new Location(testIp, testCountry, null, 0));
+                .thenReturn(testLocation);
 
         //act:
-        String expected = String.valueOf(geoServiceImpl.byIp(testIp).getCountry());
-        String preferences = String.valueOf(geoServiceTest.byIp(testIp).getCountry());
+        String expected = String.valueOf(geoServiceTest.byIp(testIp).getCountry());
+        String preferences = String.valueOf(geoServiceImpl.byIp(testIp).getCountry());
 
         //assert:
         Assertions.assertEquals(expected, preferences);

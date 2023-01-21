@@ -31,7 +31,6 @@ public class LocalizationServiceTest {
         System.out.println("locale test started...");
 
         //arrange:
-
         Country countryTest = Country.RUSSIA;
         LocalizationService localizationServiceImpl = new LocalizationServiceImpl();
         LocalizationService localizationServiceTest = Mockito.mock(LocalizationServiceImpl.class);
